@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La machine à fonds privés — Guide stratégique pour MDB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --dark:#FAF7F2; --dark2:#F2EDE3; --gold:#B8860B; --gl:#D4A017;
+  --cream:#FFFFFF; --cream2:#FDF9F3; --pale:#FDF6E3;
+  --accent:#8B6914; --text:#2C2C2C; --gray:#666; --white:#fff;
+  --red:#C0392B; --green:#1A6B3A;
+  /* LinkedIn brand palette */
+  --lk-bg:#FFFFFF; --lk-gold1:#8B6914; --lk-gold2:#B8860B; --lk-gold3:#D4A017; --lk-gold4:#E8C050;
+  --lk-dark:#1A1209; --lk-mid:#4A3800; --lk-light:#FDF6E3;
+  --grad-gold: linear-gradient(135deg, #8B6914 0%, #B8860B 35%, #D4A017 60%, #E8C050 100%);
+  --grad-gold-text: linear-gradient(90deg, #8B6914 0%, #C49A20 50%, #D4A017 100%);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:#FFFFFF;color:var(--text);line-height:1.75}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:100;background:#FFFFFF;border-bottom:2px solid transparent;background-clip:padding-box;box-shadow:0 2px 12px rgba(184,134,11,.12);display:flex;justify-content:space-between;align-items:center;padding:.7rem 3rem;border-bottom:2px solid #E8C050}
+.nav-logo{font-family:'DM Sans',serif;background:var(--grad-gold-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:700;font-size:.95rem;letter-spacing:.03em}
+.nav-links{list-style:none;display:flex;gap:1.4rem}
+.nav-links a{color:#888;text-decoration:none;font-size:.75rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;transition:color .2s}
+.nav-links a:hover{color:var(--lk-gold2)}
+
+/* ── COVER ── */
+.cover{background:linear-gradient(135deg, #FFFFFF 0%, #FDF9F0 50%, #FAF4E6 100%);min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;position:relative;overflow:hidden}
+.cover::before{content:'';position:absolute;top:-150px;right:-150px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(212,160,23,.12) 0%,transparent 70%);pointer-events:none}
+.cover::after{content:'';position:absolute;bottom:-80px;left:35%;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(184,134,11,.06) 0%,transparent 70%);pointer-events:none}
+.cover-l{padding:5rem 3rem 5rem 6rem;position:relative;z-index:1}
+.cover-tag{font-size:.7rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--lk-gold2);display:flex;align-items:center;gap:.6rem;margin-bottom:1.5rem}
+.cover-tag::before{content:'';width:2rem;height:2px;background:var(--grad-gold)}
+.cover h1{font-family:'Playfair Display',serif;font-size:clamp(3rem,5vw,5rem);font-weight:900;color:var(--lk-dark);line-height:1.05;margin-bottom:1.2rem}
+.cover h1 em{background:var(--grad-gold-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-style:normal}
+.cover-sub{font-size:1.1rem;color:#777;font-family:'DM Sans',serif;font-style:italic;border-left:3px solid var(--lk-gold2);padding-left:1rem;margin-bottom:2rem;line-height:1.55}
+.cover-promise{background:rgba(184,134,11,.05);border:1px solid rgba(184,134,11,.25);padding:1.4rem 1.6rem;margin-bottom:2rem}
+.cover-promise li{list-style:none;padding:.22rem 0;font-size:.9rem;color:#555}
+.cover-promise li::before{content:'✓  ';background:var(--grad-gold-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:700}
+.cover-promise li:last-child{background:var(--grad-gold-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:600}
+.cta-top{display:inline-block;background:var(--grad-gold);color:#fff;font-weight:700;font-size:.9rem;padding:.9rem 2rem;text-decoration:none;transition:all .2s}
+.cta-top:hover{background:linear-gradient(135deg,#9A7518 0%,#C49A20 100%);transform:translateY(-2px);box-shadow:0 8px 24px rgba(184,134,11,.3)}
+.cover-r{padding:5rem 4rem 5rem 2rem;display:flex;flex-direction:column;gap:1.2rem;position:relative;z-index:1}
+.cover-card{background:rgba(255,255,255,.8);border:1px solid rgba(184,134,11,.2);padding:1.3rem;position:relative;transition:all .25s;box-shadow:0 2px 12px rgba(184,134,11,.06)}
+.cover-card:hover{border-color:var(--lk-gold2);background:#FFFFFF;box-shadow:0 8px 24px rgba(184,134,11,.12)}
+.cover-card-n{position:absolute;top:-.7rem;left:1rem;background:var(--grad-gold);color:#fff;font-size:.65rem;font-weight:700;letter-spacing:.1em;padding:.15rem .6rem}
+.cover-card-t{font-family:'DM Sans',serif;font-size:.95rem;color:var(--lk-dark);font-weight:700;margin-bottom:.3rem}
+.cover-card p{font-size:.82rem;color:#777;line-height:1.5}
+.author-bar{background:linear-gradient(135deg,#FAF4E6 0%,#FDF9F0 100%);border-top:2px solid;border-image:var(--grad-gold) 1;padding:1.2rem 6rem;text-align:center;font-size:1.1rem;color:#888;font-style:normal;font-family:'DM Sans',serif}
+.author-bar span{background:var(--grad-gold-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:600}
+
+/* ── LAYOUT ── */
+.section-wrap{width:100%}
+.section-wrap.dark{background:linear-gradient(135deg,#FAF7F0 0%,#FDF9F3 100%)}
+.section-wrap.cream{background:#FFFFFF}
+.section-wrap.cream2{background:#FAF4E8}
+.inner{max-width:1100px;margin:0 auto;padding:5rem 3rem}
+
+/* ── SECTION HEADER ── */
+.sec-tag{font-size:.68rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;background:var(--grad-gold-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.7rem}
+.sec-h2{font-family:'DM Sans',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:700;line-height:1.15;margin-bottom:1.5rem}
+.dark .sec-h2{color:var(--lk-dark)}
+.cream .sec-h2,.cream2 .sec-h2{color:var(--lk-dark)}
+.sec-h3{font-family:'DM Sans',serif;font-size:1.25rem;font-weight:700;color:var(--accent);margin:2rem 0 .8rem}
+.dark .sec-h3{color:var(--lk-gold2)}
+p{margin-bottom:1rem}
+strong{font-weight:600}
+
+/* ── QUOTE ── */
+.quote{border-left:4px solid var(--lk-gold2);background:linear-gradient(to right,rgba(184,134,11,.06),transparent);padding:1.1rem 1.5rem;margin:1.5rem 0;font-family:'DM Sans',serif;font-style:italic;color:var(--accent);font-size:1.05rem;line-height:1.6}
+.dark .quote{background:linear-gradient(to right,rgba(184,134,11,.08),transparent);color:var(--lk-gold2)}
+
+/* ── PILLAR CARDS ── */
+.pillar-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin:2rem 0}
+.pillar{background:#FFFFFF;border:1px solid rgba(184,134,11,.2);padding:1.8rem 1.4rem;text-align:center;transition:all .25s;position:relative;overflow:hidden;box-shadow:0 2px 12px rgba(184,134,11,.05)}
+.pillar:hover{border-color:var(--lk-gold2);transform:translateY(-4px);box-shadow:0 16px 40px rgba(184,134,11,.12)}
+.pillar-num{background:var(--grad-gold);color:#fff;font-size:.65rem;font-weight:700;letter-spacing:.1em;padding:.2rem .7rem;display:inline-block;margin-bottom:1rem}
+.pillar-icon{font-size:1.8rem;margin-bottom:.7rem}
+.pillar-t{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--lk-dark);margin-bottom:.6rem}
+.pillar p{font-size:.85rem;color:#666;line-height:1.55;margin:0}
+
+/* ── TUNNEL ── */
+.tunnel{display:flex;align-items:stretch;margin:2.5rem 0;gap:0}
+.t-step{flex:1;min-width:110px;background:#FFFFFF;border:1px solid rgba(184,134,11,.3);padding:1.3rem .8rem;text-align:center;transition:all .3s;box-shadow:0 2px 8px rgba(184,134,11,.04)}
+.t-step:last-child{background:var(--grad-gold);border-color:transparent}
+.t-step:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(184,134,11,.15);z-index:2}
+.t-num{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;background:var(--grad-gold-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+.t-step:last-child .t-num{background:none;-webkit-text-fill-color:#fff;color:#fff}
+.t-icon{font-size:1.3rem;margin:.4rem 0}
+.t-label{font-weight:700;font-size:.85rem;color:var(--lk-dark)}
+.t-step:last-child .t-label{color:#fff}
+.t-sub{font-size:.68rem;color:#999;font-style:italic;margin:.2rem 0 .6rem}
+.t-step:last-child .t-sub{color:rgba(255,255,255,.75)}
+.t-desc{font-size:.72rem;color:#888;line-height:1.45}
+.t-step:last-child .t-desc{color:rgba(255,255,255,.85)}
+.t-arrow{display:flex;align-items:center;padding:0 .25rem;background:var(--grad-gold-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-size:1.3rem;font-weight:700;flex-shrink:0}
+.t-result{background:var(--grad-gold);color:#fff;text-align:center;padding:1rem 2rem;font-weight:700;font-size:1rem}
+
+/* ── POST / EMAIL CARDS ── */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin:2rem 0}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin:2rem 0}
+.card-dark{background:#FFFFFF;border:1px solid rgba(184,134,11,.2);overflow:hidden;transition:all .25s;box-shadow:0 2px 10px rgba(184,134,11,.05)}
+.card-dark:hover{border-color:var(--lk-gold2);transform:translateY(-3px);box-shadow:0 12px 32px rgba(184,134,11,.12)}
+.card-tag{background:var(--grad-gold);padding:.4rem 1rem;font-size:.65rem;font-weight:700;letter-spacing:.12em;color:#fff}
+.card-head{padding:.9rem 1.2rem .5rem;display:flex;align-items:center;gap:.7rem;border-bottom:1px solid rgba(184,134,11,.15)}
+.card-num{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;background:var(--grad-gold-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.card-title{font-weight:700;font-size:.92rem;color:var(--lk-dark)}
+.card-body{padding:1rem 1.2rem;font-size:.83rem;color:#666;line-height:1.6}
+
+/* ── EXAMPLE BOX (post / email) ── */
+.example-box{background:#FAFAFA;border:1px solid rgba(184,134,11,.3);border-left:4px solid var(--lk-gold2);padding:1.8rem 2rem;margin:1.5rem 0;font-family:'DM Sans',monospace;font-size:.82rem;color:#444;line-height:1.65;position:relative}
+.example-label{position:absolute;top:-.8rem;left:1.2rem;background:#FFFFFF;border:1px solid rgba(184,134,11,.4);background-clip:padding-box;background:var(--grad-gold);color:#fff;font-size:.65rem;font-weight:700;letter-spacing:.1em;padding:.2rem .7rem}
+.example-box .highlight{background:var(--grad-gold-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:600}
+.example-box hr{border:none;border-top:1px solid rgba(184,134,11,.2);margin:.8rem 0}
+
+/* ── TIMELINE ── */
+.timeline{display:flex;flex-direction:column;gap:.4rem;margin:2rem 0}
+.tl-row{display:grid;grid-template-columns:130px 1fr;gap:0;min-height:3rem}
+.tl-date{background:linear-gradient(135deg,#FAF0D8,#FDF6E3);color:var(--lk-gold2);font-weight:700;font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;padding:.6rem .8rem;text-align:center;border:1px solid rgba(184,134,11,.2)}
+.tl-text{background:#FFFFFF;padding:.6rem 1.1rem;font-size:.85rem;color:var(--text);display:flex;align-items:center;border-bottom:1px solid #EDE8DE}
+.tl-row.result .tl-date{background:var(--grad-gold);color:#fff;border-color:transparent}
+.tl-row.result .tl-text{background:#F0FDF4;font-weight:600;color:var(--green)}
+
+/* ── CASE STUDY ── */
+.case-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin:2rem 0}
+.case-box{background:#FFFFFF;border:1px solid rgba(184,134,11,.2);padding:1.5rem;box-shadow:0 2px 10px rgba(184,134,11,.05)}
+.case-box-t{font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;background:var(--grad-gold-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.8rem;border-bottom:1px solid rgba(184,134,11,.15);padding-bottom:.5rem}
+
+/* ── INVESTORS RESULT ── */
+.inv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin:2rem 0}
+.inv-box{background:#FFFFFF;border:1px solid rgba(184,134,11,.2);padding:1.2rem;text-align:center;transition:all .2s;box-shadow:0 2px 8px rgba(184,134,11,.04)}
+.inv-box:hover{border-color:var(--lk-gold2);box-shadow:0 8px 20px rgba(184,134,11,.1)}
+.inv-amount{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;background:var(--grad-gold-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+.inv-label{font-size:.78rem;color:#777;margin-top:.4rem;line-height:1.4}
+.inv-total{grid-column:1/-1;background:var(--grad-gold);padding:1rem;text-align:center;font-weight:700;font-size:1.1rem;color:#fff}
+
+/* ── ERRORS ── */
+.error-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin:2rem 0}
+.err-card{border:1px solid var(--red);border-left:5px solid var(--red);background:#FDF0EE;padding:1.4rem;transition:all .2s}
+.err-card:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(192,57,43,.15)}
+.err-tag{font-size:.65rem;font-weight:700;letter-spacing:.12em;color:var(--white);background:var(--red);padding:.2rem .6rem;display:inline-block;margin-bottom:.7rem}
+.err-t{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--red);margin-bottom:.6rem}
+.err-d{font-size:.83rem;color:#555;line-height:1.6}
+
+/* ── CHECKLIST ── */
+.checklist-wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin:2rem 0}
+.checklist-col{}
+.checklist-head{background:var(--grad-gold);color:#fff;font-weight:700;font-size:.9rem;padding:.75rem 1rem;margin-bottom:.4rem;display:flex;align-items:center;gap:.5rem}
+.check-item{display:grid;grid-template-columns:2rem 1fr 2.5rem;align-items:center;gap:.5rem;padding:.6rem .8rem;border-bottom:1px solid #EDE8D8;background:var(--white);transition:background .2s}
+.check-item:hover{background:#FFFEF5}
+.check-box{width:1.2rem;height:1.2rem;border:2px solid var(--lk-gold2);border-radius:0;flex-shrink:0}
+.check-text{font-size:.82rem;color:var(--text)}
+.check-pts{font-size:.75rem;font-weight:700;background:var(--grad-gold-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:right}
+.score-bands{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:2rem 0}
+.score-band{padding:1.2rem;text-align:center}
+.score-band.red{background:#FDF0EE;border:2px solid var(--red)}
+.score-band.gold{background:var(--pale);border:2px solid var(--lk-gold2)}
+.score-band.green{background:#F0FDF4;border:2px solid var(--green)}
+.score-n{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700}
+.score-band.red .score-n{color:var(--red)}
+.score-band.gold .score-n{background:var(--grad-gold-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.score-band.green .score-n{color:var(--green)}
+.score-label{font-weight:700;font-size:.85rem;margin:.3rem 0 .4rem}
+.score-band.red .score-label{color:var(--red)}
+.score-band.gold .score-label{background:var(--grad-gold-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.score-band.green .score-label{color:var(--green)}
+.score-desc{font-size:.78rem;color:var(--gray);font-style:italic}
+
+/* ── FREQ NOTE ── */
+.freq{background:rgba(184,134,11,.06);border:1px solid rgba(184,134,11,.25);padding:.9rem 1.4rem;margin:1.5rem 0;display:flex;align-items:center;gap:.7rem;font-size:.88rem;font-weight:500}
+.dark .freq{color:var(--lk-dark)}
+.cream .freq,.cream2 .freq{color:var(--lk-dark)}
+
+/* ── CTA ── */
+.cta-wrap{background:linear-gradient(135deg,#FAF4E0 0%,#FDF9F0 40%,#FAF0D0 100%);padding:6rem 3rem;text-align:center;position:relative;overflow:hidden}
+.cta-wrap::before,.cta-wrap::after{content:'';position:absolute;border-radius:50%}
+.cta-wrap::before{width:500px;height:500px;top:-200px;left:-200px;background:radial-gradient(circle,rgba(212,160,23,.12) 0%,transparent 70%)}
+.cta-wrap::after{width:350px;height:350px;bottom:-120px;right:-100px;background:radial-gradient(circle,rgba(184,134,11,.08) 0%,transparent 70%)}
+.cta-inner{max-width:700px;margin:0 auto;position:relative;z-index:1}
+.cta-wrap h2{font-family:'DM Sans',serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:900;color:var(--lk-dark);margin-bottom:1.2rem}
+.cta-wrap p{color:#777;font-size:1rem;margin-bottom:2rem}
+.cta-features{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem}
+.cta-feat{background:#FFFFFF;border:1px solid rgba(184,134,11,.2);padding:1.4rem;text-align:center;transition:all .25s;box-shadow:0 2px 8px rgba(184,134,11,.05)}
+.cta-feat:hover{background:rgba(184,134,11,.05);border-color:var(--lk-gold2)}
+.cta-feat-icon{font-size:1.7rem;margin-bottom:.5rem}
+.cta-feat-t{font-family:'DM Sans',serif;font-size:1rem;font-weight:700;color:var(--lk-dark);margin-bottom:.2rem}
+.cta-feat-s{font-size:.78rem;color:#888;font-style:italic}
+.cta-steps{display:flex;flex-direction:column;gap:.6rem;margin-bottom:2rem;text-align:left}
+.cta-step{display:flex;align-items:flex-start;gap:.8rem;font-size:.85rem;color:#666}
+.cta-step-n{background:var(--grad-gold);color:#fff;font-weight:700;font-size:.75rem;width:1.4rem;height:1.4rem;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.1rem}
+.cta-btn{display:inline-block;background:var(--grad-gold);color:#fff;font-weight:700;font-size:1rem;padding:1.1rem 2.5rem;text-decoration:none;transition:all .25s}
+.cta-btn:hover{background:linear-gradient(135deg,#9A7518 0%,#C49A20 100%);transform:translateY(-3px);box-shadow:0 16px 40px rgba(184,134,11,.3)}
+.cta-note{margin-top:.8rem;font-size:.8rem;color:#888;font-style:italic}
+
+/* ── FOOTER ── */
+footer{background:linear-gradient(135deg,#FAF4E0,#FDF9F0);color:#888;text-align:center;padding:1.8rem;font-size:.78rem;border-top:1px solid rgba(184,134,11,.2)}
+footer span{background:var(--grad-gold-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:600}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.fade{opacity:0;animation:fadeUp .7s ease forwards}
+.d1{animation-delay:.1s}.d2{animation-delay:.25s}.d3{animation-delay:.4s}.d4{animation-delay:.55s}.d5{animation-delay:.7s}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .cover{grid-template-columns:1fr}.cover-r{display:none}
+  .cover-l,.inner,.cta-wrap{padding:2.5rem 1.5rem}
+  .author-bar{padding:1.2rem 1.5rem}
+  .grid-2,.grid-3,.pillar-grid,.case-grid,.inv-grid,.error-grid,.checklist-wrap,.score-bands,.cta-features{grid-template-columns:1fr}
+  .nav-links{display:none}
+  .tunnel{overflow-x:auto}
+  .inv-total{grid-column:auto}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">La machine à fonds privés</div>
+  <ul class="nav-links">
+    <li><a href="#s1">Vérité</a></li>
+    <li><a href="#s2">La machine</a></li>
+    <li><a href="#s3">Tunnel</a></li>
+    <li><a href="#s4">LinkedIn</a></li>
+    <li><a href="#s5">Newsletter</a></li>
+    <li><a href="#s6">Étude de cas</a></li>
+    <li><a href="#s7">Erreurs</a></li>
+    <li><a href="#checklist">Checklist</a></li>
+    <li><a href="#s8">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-l">
+    <div class="cover-tag fade d1">Guide stratégique · Marchands de biens</div>
+    <h1 class="fade d2">La machine<br>à <em>fonds privés</em></h1>
+    <p class="cover-sub fade d3">Le système qui transforme un lecteur en investisseur. <br>Sans démarcher, sans banque et sans réseau existant.</p>
+    <ul class="cover-promise fade d4">
+      <li>Le tunnel de confiance en 5 étapes</li>
+      <li>Les 4 types de posts qui attirent des capitaux</li>
+      <li>Les 3 emails qui transforment un lecteur en investisseur</li>
+<li>Étude de cas : 95 000 € de fonds privés levés avec ce contenu</li>
+      <li> Checklist pour une machine à fonds privés opérationnelle</li>
+    </ul>
+    <a href="#s1" class="cta-top fade d5">Lire le guide →</a>
+  </div>
+  <div class="cover-r">
+    <div class="cover-card fade d2" data-num="SECTION 1">
+      <div class="cover-card-n">SECTION 1-3</div>
+      <div class="cover-card-t">🏦 La vérité sur le financement</div>
+      <p>Pourquoi les banques freinent votre croissance : Découvrez l'alternative indispensable pour scaler votre business de MDB.</p>
+    </div>
+    <div class="cover-card fade d3" data-num="SECTIONS 4–5">
+      <div class="cover-card-n">SECTIONS 4–5</div>
+      <div class="cover-card-t">📢📧 LinkedIn + Newsletter</div>
+      <p>Le combo absolu pour attirer vos futurs partenaires financiers : Passez à l’action dès aujourd'hui avec ces exemples concrets.</p>
+    </div>
+    <div class="cover-card fade d4" data-num="SECTION 6">
+      <div class="cover-card-n">SECTION 6</div>
+      <div class="cover-card-t">💰 Étude de cas</div>
+      <p>Vous vous demandez si c'est vraiment possible ? Regardez Thomas : 95 000 € levés auprès d'investisseurs qui ne le connaissaient pas.</p>
+    </div>
+    <div class="cover-card fade d5" data-num="BONUS">
+      <div class="cover-card-n">BONUS</div>
+      <div class="cover-card-t">✓ Checklist + score</div>
+      <p>10 questions pour savoir où vous en êtes. Un score sur 30 pour évaluer votre machine.</p>
+    </div>
+  </div>
+</div>
+
+<!-- PARTIE 1 -->
+<div id="s1" class="section-wrap cream">
+<div class="inner">
+  <div class="sec-tag">Section 1</div>
+  <h2 class="sec-h2">La vérité sur le financement des MDB</h2>
+  <p>Vous avez trouvé LA bonne affaire. L'immeuble a du potentiel,  les chiffres sont impeccables et vous avez décroché l’accord espéré. Il ne vous reste que 48 heures pour sécuriser votre apport.</p>
+  <p><strong>Problème : Votre banquier ne répond pas.</strong></p>
+  <div class="quote">Pour les Marchands de Biens, ce ne sont pas les opportunités qui manquent.
+Ce qui manque, c’est le capital pour les saisir à temps.</div>
+  <h3 class="sec-h3">Ce que les banques ne diront jamais</h3>
+  <p>Les établissements bancaires sont structurellement inadaptés aux exigences de réactivité d'un MDB. Entre les comités de crédit, les délais d’instruction et l’exigence excessive de garanties, leurs procédures sont un frein paralysant votre rentabilité. Pour un MDB réalisant trois à cinq opérations par an, dépendre uniquement du circuit bancaire traditionnel est une stratégie risquée.</p>
+  <div class="error-grid" style="margin-top:1.5rem;">
+    <div class="err-card">
+      <div class="err-tag">CONSÉQUENCE 1</div>
+      <div class="err-t">Opérations ratées</div>
+      <p class="err-d">Faute de capital disponible immédiatement, vous cédez la bonne affaire à un concurrent mieux capitalisé.</p>
+    </div>
+    <div class="err-card">
+      <div class="err-tag">CONSÉQUENCE 2</div>
+      <div class="err-t">Croissance plafonnée</div>
+      <p class="err-d">Votre volume d'opérations est limité par votre capacité d'endettement bancaire et non par votre talent de MDB.</p>
+    </div>
+    <div class="err-card">
+      <div class="err-tag">CONSÉQUENCE 3</div>
+      <div class="err-t">Dépendance structurelle</div>
+      <p class="err-d">Un refus bancaire suffit à bloquer une opération, peu importe sa qualité. Vous n'avez aucun levier alternatif.</p>
+    </div>
+  </div>
+  <h3 class="sec-h3">La solution que les leaders du marché utilisent</h3>
+  <p>Les Marchands de Biens qui dominent le marché l'ont compris : la clé d'une croissance exponentielle ne réside pas dans la chance, mais dans la maîtrise de son capital réseau. Ils ont donc constitué un réseau d'investisseurs privés qui leur fait confiance avant même qu'ils présentent un dossier.</p>
+  <p>Ces investisseurs ne viennent pas d'un carnet d'adresses miraculeux. Ils ont été construits méthodiquement grâce à une présence digitale stratégique.</p>
+  <div class="quote">Ces Marchands de Biens n’ont pas plus de chance que les autres. Ils ont simplement construit un système qui transforme leur crédibilité en capitaux.</div>
+</div>
+</div>
+
+<!-- PARTIE 2 -->
+<div id="s2" class="section-wrap dark">
+<div class="inner">
+  <div class="sec-tag">Section 2</div>
+  <h2 class="sec-h2">La machine à fonds privés</h2>
+  <p style="color:#666">Pourquoi certains Marchands de Biens parviennent à lever 50 000, 100 000, voire 200 000 €, là où d'autres s'épuisent à obtenir péniblement 20 000 € ? Oubliez les idées reçues : ce n’est ni une question de palmarès, ni une question d'années d'expérience. La véritable clé, c'est cette confiance magnétique qu'ils développent auprès des investisseurs. Mais la confiance ne s'attend pas, elle se bâtit stratégiquement. <strong style="color:var(--lk-dark)">Maîtrisez l'art de la persuasion, et les investisseurs vous choisiront par conviction.</strong></p>
+  <h3 class="sec-h3">Les 3 piliers de la machine</h3>
+  <div class="pillar-grid">
+    <div class="pillar">
+      <div class="pillar-num">01</div>
+      <div class="pillar-icon">📢</div>
+      <div class="pillar-t">Visibilité ciblée</div>
+      <p>Publier régulièrement sur LinkedIn pour exister dans l'esprit des personnes susceptibles d'investir — sans pitcher, sans démarcher.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">02</div>
+      <div class="pillar-icon">📧</div>
+      <div class="pillar-t">Confiance progressive</div>
+      <p>Une newsletter régulière avec des chiffres réels, des cas concrets et une transparence sur les risques. Le lecteur apprend à vous connaître.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">03</div>
+      <div class="pillar-icon">💰</div>
+      <div class="pillar-t">Closing naturel</div>
+      <p>Quand l'opportunité arrive, les investisseurs sont déjà prêts. L'appel de fonds devient une formalité — pas une négociation.</p>
+    </div>
+  </div>
+  <div class="quote">Ce système ne se contente pas de valoriser votre expertise : il la transforme en un véritable capital de confiance — et ce capital se convertit en une puissance financière tangible.</div>
+</div>
+</div>
+
+<!-- PARTIE 3 -->
+<div id="s3" class="section-wrap cream2">
+<div class="inner">
+  <div class="sec-tag">Section 3</div>
+  <h2 class="sec-h2">Le tunnel de confiance : du simple post au ticket investi</h2>
+  <p>Personne ne veut confier 50 000 € à un inconnu. Mais quelqu'un qui vous lit depuis six semaines, qui a intégré votre rigueur et qui a été témoin de votre sang-froid face aux imprévus : pour lui, investir devient une évidence. </p>
+  <div class="tunnel">
+    <div class="t-step">
+      <div class="t-num">1</div><div class="t-icon">📢</div>
+      <div class="t-label">LinkedIn</div><div class="t-sub">Visibilité</div>
+      <div class="t-desc">Apparaître dans le fil de vos cibles. Régularité > perfection.</div>
+    </div>
+    <div class="t-arrow">→</div>
+    <div class="t-step">
+      <div class="t-num">2</div><div class="t-icon">👤</div>
+      <div class="t-label">Profil</div><div class="t-sub">Qualification</div>
+      <div class="t-desc">10 secondes pour convaincre : crédible, actif, clair.</div>
+    </div>
+    <div class="t-arrow">→</div>
+    <div class="t-step">
+      <div class="t-num">3</div><div class="t-icon">📧</div>
+      <div class="t-label">Newsletter</div><div class="t-sub">Confiance</div>
+      <div class="t-desc">Hors algorithme. Chiffres réels. Il apprend à vous connaître.</div>
+    </div>
+    <div class="t-arrow">→</div>
+    <div class="t-step">
+      <div class="t-num">4</div><div class="t-icon">💬</div>
+      <div class="t-label">Échanges</div><div class="t-sub">Dialogue</div>
+      <div class="t-desc">Il réagit, pose des questions. Le lien devient direct.</div>
+    </div>
+    <div class="t-arrow">→</div>
+    <div class="t-step">
+      <div class="t-num">5</div><div class="t-icon">🤝</div>
+      <div class="t-label">RDV</div><div class="t-sub">Décision</div>
+      <div class="t-desc">Vous présentez l'op. Il vous connaît déjà. La décision est facilitée.</div>
+    </div>
+  </div>
+   <div class="quote" style="margin-top:2rem">La confiance n'est pas seulement un atout, c'est votre levier le plus puissant pour transformer une simple relation en un financement rapide, fluide et sans friction.</div>
+</div>
+
+<!-- PARTIE 4 -->
+<div id="s4" class="section-wrap dark">
+<div class="inner">
+  <div class="sec-tag">Section 4</div>
+  <h2 class="sec-h2">📢 LinkedIn : attirer et qualifier les investisseurs</h2>
+  <p style="color:#666">Ne voyez plus LinkedIn comme un simple réseau social, mais comme votre levier de croissance ultime. Pour un Marchand de Biens, cette plateforme est une vitrine de crédibilité qui place votre expertise sous les yeux de milliers d’investisseurs prêts à passer à l’action.</p>
+  <h3 class="sec-h3">Les 4 types de posts à utiliser</h3>
+  <div class="grid-2">
+    <div class="card-dark">
+      <div class="card-tag">CRÉDIBILITÉ</div>
+      <div class="card-head"><span class="card-num">①</span><span class="card-title">Post « Preuve de sérieux »</span></div>
+      <div class="card-body">Retour chiffré sur une opération : prix d'achat, budget travaux, prix de revente, marge nette. Mentionnez le risque principal et comment vous l'avez encadré. Ce post crédibilise en 30 secondes.</div>
+    </div>
+    <div class="card-dark">
+      <div class="card-tag">RASSURANCE</div>
+      <div class="card-head"><span class="card-num">②</span><span class="card-title">Post « Coulisses maîtrisées »</span></div>
+      <div class="card-body">Un problème est survenu sur chantier ou en urbanisme. Vous expliquez comment vous l'avez anticipé, traité, résolu. Ce post rassure plus qu'un discours parfait : il montre que vous gérez la réalité.</div>
+    </div>
+    <div class="card-dark">
+      <div class="card-tag">ÉDUCATION</div>
+      <div class="card-head"><span class="card-num">③</span><span class="card-title">Post « Pédagogie investisseurs »</span></div>
+      <div class="card-body">TVA sur marge, montage en SCI, calendrier de trésorerie, régime juridique d'une division… Expliquez un concept qui intéresse directement un investisseur. Vous éduquez votre futur associé.</div>
+    </div>
+    <div class="card-dark">
+      <div class="card-tag">ACQUISITION</div>
+      <div class="card-head"><span class="card-num">④</span><span class="card-title">Post « Porte d'entrée newsletter »</span></div>
+      <div class="card-body">« Chaque mois, je partage les chiffres complets d'une opération en cours dans ma newsletter. Prix d'achat, coût des travaux, stratégie de sortie, rendement cible. Commentez NEWS pour la recevoir. »</div>
+    </div>
+  </div>
+  <h3 class="sec-h3">Exemple de post LinkedIn</h3>
+  <div class="example-box">
+    <div class="example-label">PÉDAGOGIE INVESTISSEURS</div>
+    <p><strong style="color:var(--lk-gold2)">La TVA sur marge : ce que votre banquier ne vous explique pas.</strong></p>
+    <hr>
+    <p>La plupart des gens pensent que vendre un bien immobilier, c'est payer la TVA sur le prix de vente total.</p>
+    <p>Pour un Marchand de Biens, ce n'est pas comme ça que ça fonctionne.</p>
+    <p><strong style="color:var(--lk-gold2)">Le principe :</strong><br>
+    Un MDB qui achète un bien 150 000 € et le revend 240 000 € après travaux ne paie pas la TVA sur 240 000 €.<br>
+    Il la paie uniquement sur la différence entre le prix de vente et le prix d'achat — soit 90 000 €.<br><br>
+    TVA à 20 % sur 90 000 € = <span class="highlight">18 000 €</span> au lieu de 48 000 €.<br>
+    Économie : <span class="highlight">30 000 €</span> sur une seule opération.</p>
+    <hr>
+    <p><strong style="color:var(--lk-gold2)">Pourquoi c'est important pour un investisseur privé :</strong><br>
+    Cette économie fiscale sécurise directement la marge de l'opération et donc la capacité du MDB à vous rembourser avec les intérêts convenus.<br><br>
+    Un projet dont la marge brute est de 60 000 € sans ce régime tombe à 30 000 € net.<br>
+    Avec la TVA sur marge correctement appliquée, cette marge est préservée.</p>
+    <p><strong style="color:var(--lk-gold2)">Les conditions pour en bénéficier :</strong><br>
+    — Le bien doit avoir été acheté sans TVA (auprès d'un particulier ou d'une entité non assujettie)<br>
+    — Il ne doit pas avoir fait l'objet d'une construction neuve<br>
+    — Le MDB doit être assujetti à la TVA et l'avoir mentionné dans l'acte d'achat<br><br>
+    Un montage mal structuré peut faire basculer l'opération en TVA sur le prix total et donc réduire la marge de moitié.</p>
+    <hr>
+    <p><strong style="color:var(--lk-gold2)">Ce que ça dit d'un MDB sérieux :</strong><br>
+    Quand un Marchand de Biens maîtrise ce régime, ce n'est pas un détail comptable.<br>
+    C'est le signe qu'il optimise chaque levier fiscal avant de vous présenter un dossier.<br>
+    C'est ce qui sépare un opérateur amateur d'un professionnel structuré.</p>
+    <p class="highlight">➜ Chaque mois, j'explique un mécanisme comme celui-ci dans ma newsletter — avec des chiffres concrets issus d'opérations réelles.<br>Commentez NEWS pour la recevoir.</p>
+  </div>
+  <div class="freq">⏱ <strong>Fréquence minimale : 2 à 3 posts / semaine</strong> Objectif : que quelqu'un qui vous découvre ait toujours 3–4 posts récents pour se faire une idée de vous.</div>
+</div>
+</div>
+
+<!-- PARTIE 5 -->
+<div id="s5" class="section-wrap cream">
+<div class="inner">
+  <div class="sec-tag">Section 5</div>
+  <h2 class="sec-h2">📧 La newsletter : l'actif central de votre machine</h2>
+  <p>LinkedIn vous rend visible. La newsletter vous rend indispensable. Oubliez le tumulte des algorithmes et le bruit permanent des réseaux sociaux : c’est dans l’intimité de la boîte mail que se bâtit une relation de confiance.
+</p>
+  <div class="grid-2" style="margin-bottom:0">
+    <div><p><strong>Pourquoi l'email est supérieur à tout autre canal :</strong></p>
+    <ul style="padding-left:1.2rem;color:var(--text);font-size:.9rem;line-height:1.9">
+      <li><strong>Zéro algorithme</strong> — Vous prenez le contrôle. Vous choisissez qui reçoit quoi et quand.</li>
+      <li><strong>Attention exclusive</strong> — Contrairement au scroll infini, l'email capte l'attention. Votre message est lu, entendu, assimilé.</li>
+      <li><strong>Engagement qualifié</strong> — Chaque abonné fait le choix conscient de vous lire. Vous ne cherchez pas votre audience, elle vous a choisi.</li>
+      <li><strong>Rentabilité maximale</strong> — Votre newsletter est un actif pérenne. Chaque envoi peut être réutilisé pour vos réseaux et pour vos supports de vente.</li>
+    </ul></div>
+    <div class="quote" style="height:fit-content;align-self:center">C'est ici que vous marquez les esprits : en cultivant une confiance durable, vous transformez de simples lecteurs en investisseurs convaincus.</div>
+  </div>
+  <h3 class="sec-h3">Les 3 emails qui transforment un lecteur en investisseur</h3>
+  <div class="grid-3">
+    <div class="card-dark">
+      <div class="card-tag">LE PLUS PUISSANT</div>
+      <div class="card-head"><span class="card-num"></span><span class="card-title">Email « Cas réel »</span></div>
+      <div class="card-body">Décorticage complet d'une opération : contexte du bien, chiffres exacts (achat / travaux / frais / sortie), risque principal + stratégie appliquée, leçon pour l'investisseur.<br><br><em>Format : 500–700 mots · 1×/mois minimum.</em></div>
+    </div>
+    <div class="card-dark">
+      <div class="card-tag">RASSURER</div>
+      <div class="card-head"><span class="card-num"></span><span class="card-title">Email « Gestion des risques »</span></div>
+      <div class="card-body">Focus sur un seul risque (urbanisme, artisan défaillant, financement, délai…). Comment vous l'anticipez, l'encadrez, le résolvez.<br><br>Sous-texte implicite : <em>« Mon argent est entre de bonnes mains. »</em></div>
+    </div>
+    <div class="card-dark">
+      <div class="card-tag">CRÉER L'ALIGNEMENT</div>
+      <div class="card-head"><span class="card-num"></span><span class="card-title">Email « Vision & relationnel »</span></div>
+      <div class="card-body">Votre philosophie, vos critères de sélection, votre éthique sur les locataires, les vendeurs, les délais. Objectif : que l'investisseur se sente aligné avec votre manière de travailler.</div>
+    </div>
+  </div>
+  <h3 class="sec-h3">Exemple d'email complet</h3>
+  <div class="example-box">
+    <div class="example-label">CAS RÉEL : Division en lots</div>
+    <p><strong style="color:var(--lk-gold2)">Objet : Ce que cette opération m'a vraiment coûté (chiffres)</strong></p>
+    <hr>
+    <p>L'opération de Bourg-en-Bresse est soldée.<br>Voici les chiffres exacts, sans filtre.</p>
+    <p><strong style="color:var(--lk-gold2)">Le bien :</strong> immeuble de 3 logements<br>
+    Prix d'acquisition : <span class="highlight">168 000 €</span><br>
+    Travaux réels : <span class="highlight">64 200 €</span> (budget initial : 54 000 €)<br>
+    Frais annexes : <span class="highlight">13 500 €</span> (notaire, géomètre, etc.)<br>
+    Prix de revente : <span class="highlight">278 000 €</span> (lot par lot)<br>
+    <strong>Marge brute : <span class="highlight">32 300 €</span> · Durée : 8 mois</strong></p>
+    <hr>
+    <p><strong style="color:var(--lk-gold2)">Les travaux imprévus :</strong> en cours de chantier, le couvreur détecte une charpente partiellement dégradée par des insectes sur le tiers de la toiture. Non visible lors de la visite. Coût supplémentaire : +10 200 €.</p>
+    <p><strong style="color:var(--lk-gold2)">Ce que j'ai mis en place pour la prochaine fois :</strong> prévoir un diagnostic charpente par un expert avant signature, même quand la couverture semble en bon état visuellement.</p>
+    <hr>
+    <p><strong style="color:var(--lk-gold2)">Ce que retient un investisseur de cette opération :</strong> même avec un dérapage de 19 %, le deal reste rentable. Parce que la marge de sécurité était intégrée dès le montage.</p>
+    <p class="highlight">La prochaine opération arrive dans 6 semaines. Je cherche 2 à 3 investisseurs privés pour un ticket entre 20 et 40k€.<br>Répondez directement à cet email si vous souhaitez recevoir le dossier.</p>
+  </div>
+  <div class="freq">⏱ <strong>Fréquence idéale : 1 newsletter toutes les 2 semaines.</strong> Une cadence maîtrisée sur six mois est infiniment plus puissante qu'un feu de paille qui s'éteint en trois semaines.</div>
+</div>
+</div>
+
+<!-- PARTIE 6 — ÉTUDE DE CAS -->
+<div id="s6" class="section-wrap dark">
+<div class="inner">
+  <div class="sec-tag">Section 6 — Étude de cas</div>
+  <h2 class="sec-h2">95 000 € de fonds privés : Comment Thomas l'a fait grâce à sa stratégie de contenu </h2>
+ 
+  <h3 class="sec-h3">La situation de départ</h3>
+  <div class="case-grid">
+    <div class="case-box">
+      <div class="case-box-t">Le profil</div>
+      <p style="color:#555;font-size:.85rem">Thomas, 38 ans. MDB depuis 4 ans. 9 opérations réalisées. <strong style="color:var(--lk-dark)">Aucune présence digitale.</strong> 
+Réseau : entourage proche et 2 partenaires bancaires uniquement.</p>
+    </div>
+    <div class="case-box">
+      <div class="case-box-t">Le problème</div>
+      <p style="color:#555;font-size:.85rem">À chaque opération, le même frein : réunir les fonds propres en urgence. Ne voulant plus  solliciter son entourage ou dépendre du bon vouloir partiel de la banque, <strong style="color:var(--lk-gold2)">il construit alors une alternative stratégique avant que le prochain deal arrive.</strong>
+    </div>
+  </div>
+  <h3 class="sec-h3">La mise en place mois par mois</h3>
+  <div class="timeline">
+    <div class="tl-row"><div class="tl-date">Mois 1</div><div class="tl-text">Profil LinkedIn optimisé. 2 posts/semaine : retour chiffré sur une opération passée + présentation de sa méthode de sélection de biens. Lancement newsletter.</div></div>
+    <div class="tl-row"><div class="tl-date">Mois 2</div><div class="tl-text">2 posts/semaine. 2 newsletters envoyées : débrief complet de sa meilleure opération avec chiffres réels, risques gérés, marge nette. 45 abonnés.</div></div>
+    <div class="tl-row"><div class="tl-date">Mois 3</div><div class="tl-text">2 posts/semaine. 2 newsletters envoyées : gestion d'un imprévu chantier + vision du métier et critères de sélection. 90 abonnés.</div></div>
+    <div class="tl-row"><div class="tl-date">Mois 4</div><div class="tl-text">2 posts/semaine. 1 email de positionnement. 120 abonnés qualifiés. Aucune opération à financer — la machine tourne en autonomie.</div></div>
+    <div class="tl-row"><div class="tl-date">Mois 5</div><div class="tl-text">Une affaire se présente : immeuble de 4 lots à Tours. Besoin : 95 000 € de fonds propres. Délai de signature : 9 semaines. Thomas envoie un email d'annonce à ses 120 abonnés.</div></div>
+    <div class="tl-row result"><div class="tl-date">Résultat</div><div class="tl-text">95 000 € levés en quelques semaines.</div></div>
+  </div> 
+<p>Parmi ses investisseurs : des contacts LinkedIn qui ne l'avaient jamais rencontré en vrai et des abonnés qui suivaient ses opérations depuis plusieurs mois. En cultivant son autorité et sa transparence sur le long terme, il a transformé ses lecteurs en partenaires. Résultat ? Une levée de fonds fluide et sans négociation ardue.
+</p>
+
+  <div class="inv-total" style="margin-top:2rem;border-radius:2px">Total levé : 95 000 € · 0 appel à froid · 0 négociation</div>
+  <div class="quote" style="margin-top:2rem">Thomas n'avait pas un réseau extraordinaire. Il avait un système. Et ce système a converti des inconnus en investisseurs convaincus avant même le premier RDV.</div>
+</div>
+</div>
+
+<!-- PARTIE 7 -->
+<div id="s7" class="section-wrap cream2">
+<div class="inner">
+  <div class="sec-tag">Section 7</div>
+  <h2 class="sec-h2">Pourquoi la plupart des MDB n'y arrivent pas</h2>
+  <p>Le système est simple. Pourtant, la grande majorité des marchands de biens ne l'appliquent pas ou l'appliquent mal. Voici les trois erreurs que je vois systématiquement :</p>
+  <div class="error-grid">
+    <div class="err-card">
+      <div class="err-tag">ERREUR 01</div>
+      <div class="err-t">Le contenu irrégulier</div>
+      <p class="err-d">4 posts en 2 semaines, puis silence pendant un mois. L'algorithme LinkedIn pénalise. L'audience perd confiance.<br><br><strong>2 posts/semaine pendant 3 mois puis plus rien > profil oublié.</strong></p>
+    </div>
+    <div class="err-card">
+      <div class="err-tag">ERREUR 02</div>
+      <div class="err-t">Pas de stratégie, juste du contenu</div>
+      <p class="err-d">Des photos de chantier sans chiffres, sans appel newsletter, sans objectif clair. Le contenu sans stratégie est du bruit.<br><br><strong>Chaque post doit servir un rôle précis : crédibilité, pédagogie, ou capture d'email.</strong></p>
+    </div>
+    <div class="err-card">
+      <div class="err-tag">ERREUR 03</div>
+      <div class="err-t">LinkedIn et email déconnectés</div>
+      <p class="err-d">Un outil ou l'autre. Rarement les deux en synergie. Or c'est la combinaison qui crée la puissance.<br><br><strong>LinkedIn amène le trafic. La newsletter construit la confiance. Séparément : des canaux. Ensemble : une machine.</strong></p>
+    </div>
+  </div>
+  <div class="quote">Si la majorité des MDB connaissent ces outils, rares sont ceux qui les exploitent avec la rigueur et la vision stratégique nécessaires pour dominer le marché. Pourtant, c'est en intégrant ces leviers de manière cohérente et systématique que vous développerez un avantage compétitif décisif.</div>
+  <h3 class="sec-h3">Ce que ça implique concrètement</h3>
+  <p>Mettre en place ce système demande <strong>3 à 4 heures par semaine minimum</strong> : créer les posts, rédiger les newsletters, analyser les retours, affiner le positionnement.</p>
+  <p>Pour un Marchand de Biens actif qui monte 2 à 4 opérations par an, c'est souvent du temps qui n'existe pas. Vous montez des opérations, vous gérez des chantiers, vous négociez des deals. Construire votre audience en parallèle, c'est une mission de plus.</p>
+C’est précisément pour cette raison que les professionnels les plus aguerris font le choix stratégique de déléguer cette mission à un ghostwriter spécialisé.</p>
+</div>
+</div>
+
+<!-- CHECKLIST -->
+<div id="checklist" class="section-wrap dark">
+<div class="inner">
+  <div class="sec-tag">Bonus</div>
+  <h2 class="sec-h2">Votre machine à investisseurs est-elle opérationnelle ?</h2>
+  <p style="color:#666">Répondez honnêtement à chaque question et comptabilisez votre score sur 30.</p>
+  <div class="checklist-wrap">
+    <div class="checklist-col">
+      <div class="checklist-head">📢 LinkedIn</div>
+      <div class="check-item"><div class="check-box"></div><div class="check-text">Profil optimisé avec accroche claire pour vos cibles investisseurs</div><div class="check-pts">+2</div></div>
+      <div class="check-item"><div class="check-box"></div><div class="check-text">2 posts / semaine depuis plus de 4 semaines</div><div class="check-pts">+3</div></div>
+      <div class="check-item"><div class="check-box"></div><div class="check-text">Au moins 1 post avec chiffres réels d'opération publiés</div><div class="check-pts">+3</div></div>
+      <div class="check-item"><div class="check-box"></div><div class="check-text">Appel régulier vers la newsletter dans votre bio et vos posts</div><div class="check-pts">+2</div></div>
+    </div>
+    <div class="checklist-col">
+      <div class="checklist-head">📧 Newsletter</div>
+      <div class="check-item"><div class="check-box"></div><div class="check-text">Newsletter active avec au moins 50 abonnés qualifiés</div><div class="check-pts">+3</div></div>
+      <div class="check-item"><div class="check-box"></div><div class="check-text">Au moins 1 email envoyé avec des chiffres complets d'opération</div><div class="check-pts">+3</div></div>
+      <div class="check-item"><div class="check-box"></div><div class="check-text">Envoi toutes les 2 semaines, sans interruption</div><div class="check-pts">+3</div></div>
+      <div class="check-item"><div class="check-box"></div><div class="check-text">Réponse spontanée d'un lecteur intéressé par une opération</div><div class="check-pts">+4</div></div>
+    </div>
+    <div class="checklist-col">
+      <div class="checklist-head">⚙ Système</div>
+      <div class="check-item"><div class="check-box"></div><div class="check-text">LinkedIn et newsletter connectés (LinkedIn → inscription newsletter)</div><div class="check-pts">+3</div></div>
+      <div class="check-item"><div class="check-box"></div><div class="check-text">Déjà levé des fonds privés grâce à votre contenu digital</div><div class="check-pts">+4</div></div>
+    </div>
+  </div>
+  <div class="score-bands">
+    <div class="score-band red"><div class="score-n">0–10 pts</div><div class="score-label">Machine inexistante</div><div class="score-desc">Vous partez de zéro. C'est le moment de structurer.</div></div>
+    <div class="score-band gold"><div class="score-n">11–20 pts</div><div class="score-label">En construction</div><div class="score-desc">Les bases sont là. Il manque la cohérence et la stratégie.</div></div>
+    <div class="score-band green"><div class="score-n">21–30 pts</div><div class="score-label">Opérationnelle</div><div class="score-desc">Vous avez un système. Optimisez et passez à un niveau supérieur.</div></div>
+  </div>
+</div>
+</div>
+
+<!-- SECTION QUI SUIS-JE -->
+<div class="section-wrap cream">
+<div class="inner" style="max-width:900px">
+  <div class="sec-tag">À propos</div>
+  <h2 class="sec-h2" style="color:var(--lk-dark)">Pourquoi me faire confiance ?</h2>
+  <p style="color:#666;font-size:1rem;margin-bottom:2.5rem">Ces trois expériences distinctes m'ont permis de comprendre à la fois le métier de MDB, la psychologie de l'investisseur, et la mécanique du contenu qui convertit.</p>
+  <div class="pillar-grid">
+    <div class="pillar">
+      <div class="pillar-icon">🏛️</div>
+      <div class="pillar-t">Architecte d'intérieur</div>
+      <p>J'ai travaillé sur des projets de rénovation aux côtés de Marchands de Biens. Je connais la réalité du terrain, les arbitrages, les imprévus de chantier et les contraintes de délai. </p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon">💶</div>
+      <div class="pillar-t">Investisseuse en crowdfunding</div>
+      <p>J'ai investi dans des projets immobiliers via des plateformes de financement participatif. Je sais ce qui convainc un investisseur privé et ce qui le fait hésiter.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon">✍️</div>
+      <div class="pillar-t">Ghostwriter spécialisée MDB</div>
+      <p>Je conçois des stratégies de contenu LinkedIn et Newsletter exclusivement pour des Marchands de Biens. Mon objectif : transformer votre expertise pour que vos futurs investisseurs vous trouvent avant que vous ayez besoin d'eux.</p>
+    </div>
+  </div>
+  <div class="quote" style="margin-top:1rem">Je conçois des systèmes de contenus qui transforment votre expertise en aimants à capitaux privés et en deals off-market.</div>
+</div>
+</div>
+
+<!-- SECTION 8 — CTA -->
+<div id="s8" class="cta-wrap">
+<div class="cta-inner">
+  <div class="sec-tag" style="text-align:center">Section 8 — Passez à l'action</div>
+  <h2>Cette machine fonctionne.<br>
+  <p>Pour la lancer, voici ce que je vous propose :</p>
+  <div class="cta-features">
+  <div class="cta-steps">
+    <div class="cta-step"><div class="cta-step-n">1</div><div>Un appel de 30 minutes pour comprendre votre profil, vos opérations et vos cibles.</div></div>
+    <div class="cta-step"><div class="cta-step-n">2</div><div>Une proposition sur mesure : stratégie, formats, fréquence, objectifs.</div></div>
+    <div class="cta-step"><div class="cta-step-n">3</div><div>Démarrage en 2 semaines. Premiers résultats mesurables en 6 à 8 semaines.</div></div>
+  </div>
+  <a href="https://linkedin.com" class="cta-btn">📩 Si vous voulez mettre en place cette machine à investisseurs, envoyez-moi “MACHINE” en message privé</a>
+  <div class="cta-note">Je réponds personnellement dans les 24 heures.</div>
+</div>
+</div>
+
+<footer>
+  <span>La machine à fonds privés</span> · Guide stratégique pour marchands de biens · Tous droits réservés
+</footer>
+</body>
+</html>
